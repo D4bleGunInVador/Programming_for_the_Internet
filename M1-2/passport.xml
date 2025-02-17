@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!DOCTYPE passport SYSTEM "passport.dtd">
+<?xml-stylesheet type="text/css" href="passport.css"?>
+
+<passports>
+    <passport>
+        <header>Національний Паспорт</header>
+        <photo>photo1.jpg</photo>
+        <details>
+            <first_name>Іван</first_name>
+            <last_name>Петров</last_name>
+            <middle_name>Іванович</middle_name>
+            <address>Київ, вул. Шевченка, 12</address>
+            <id_number>ІПН:123456789</id_number>
+        </details>
+        <footer>00000111121</footer>
+		
+    </passport>
+    <passport>
+        <header>Національний Паспорт</header>
+        <photo>photo2.jpg</photo>
+        <details>
+            <first_name>Марія</first_name>
+            <last_name>Іванова</last_name>
+            <middle_name>Петрівна</middle_name>
+            <address>Одеса, вул. Дерибасівська, 34</address>
+            <id_number>ІПН:987654321</id_number>
+        </details>
+        <footer>00000111122</footer>
+    </passport>

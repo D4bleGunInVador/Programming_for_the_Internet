@@ -1,0 +1,10 @@
+<!ELEMENT passport (header, photo, details, footer)>
+<!ELEMENT header (#PCDATA)>
+<!ELEMENT photo (#PCDATA)>
+<!ELEMENT details (first_name, last_name, middle_name, address, id_number)>
+<!ELEMENT first_name (#PCDATA)>
+<!ELEMENT last_name (#PCDATA)>
+<!ELEMENT middle_name (#PCDATA)>
+<!ELEMENT address (#PCDATA)>
+<!ELEMENT id_number (#PCDATA)>
+<!ELEMENT footer (#PCDATA)>
