@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Таблиця 3x3</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        .row1 {
+            background-color: green;
+        }
+        .row2 {
+            background-color: black;
+            color: white; /* щоб текст був читабельним на чорному фоні */
+        }
+        .row3 {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Таблиця 3x3</h1>
+    <table>
+        <tr class="row1">
+            <td>Ліверпуль</td>
+            <td>Кольт Патерсон</td>
+            <td>Рівер Райфл</td>
+        </tr>
+        <tr class="row2">
+            <td>Спенсер</td>
+            <td colspan="2">Дрейзе</td>
+        </tr>
+        <tr class="row3">
+            <td>Вінчестер</td>
+            <td>Сміт-Вессон</td>
+            <td>Ле Ма</td>
+        </tr>
+    </table>
+</body>
+</html>

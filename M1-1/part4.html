@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>План-Схема</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 36px;
+        }
+        .campus-map {
+            display: inline-block;
+            margin: 20px auto;
+            position: relative;
+        }
+        img {
+            width: 857px;
+            height: 752px;
+        }
+        .info-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7); /* Напівпрозорий мутний фон */
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            z-index: 10;
+        }
+        .info-box.active {
+            display: block;
+        }
+        area {
+            outline: 2px solid rgba(0, 0, 0, 0.5); /* Прозора обводка */
+            transition: outline-color 0.3s ease;
+        }
+        area:hover {
+            outline-color: rgba(255, 180, 0, 0.8); /* Зміна обводки при наведенні */
+        }
+    </style>
+</head>
+<body>
+    <h1>План-Схема</h1>
+    <div class="campus-map">
+        <img src="MAP.jpg" alt="Карта території університету" usemap="#university-map">
+        <div class="info-box" id="info-box"></div>
+    </div>
+
+    <map name="university-map">
+        <area shape="poly" coords="340,250,536,166,566,225,460,270,477,310,454,320,436,284,353,309" href="build1.html" alt="Корпус 1">
+        <area shape="poly" coords="658,409,724,383,715,345,742,339,763,399,666,433" href="#" alt="Корпус 2" onclick="showInfo(event, 'Корпус 2: Використовується для факультету аеронавігації, електроніки та телекомунікацій (ФАЕТ)')">
+        <area shape="poly" coords="707,624,789,598,815,666,735,699" href="#" alt="Корпус 3" onclick="showInfo(event, 'Корпус 3: Переважно використовується для факультету екологічної безпеки, інженерії та технологій')">
+        <area shape="poly" coords="760,513,797,498,844,609,807,622" href="#" alt="Корпус 4" onclick="showInfo(event, 'Корпус 4: Використовується для навчальних лабораторій та дослідницьких проектів')">
+        <area shape="poly" coords="579,587,666,553,681,593,596,627" href="#" alt="Корпус 6" onclick="showInfo(event, 'Корпус 6: Використовується для фахового коледжу комп’ютерних технологій та економіки')">
+        <area shape="poly" coords="101,343,136,336,171,425,105,450,88,409,122,395" href="#" alt="Корпус 8" onclick="showInfo(event, 'Корпус 8: Використовується для різних факультетів та навчальних підрозділів')">
+        <area shape="poly" coords="406,428,581,358,619,453,443,524" href="#" alt="Корпус 11" onclick="showInfo(event, 'Корпус 11: Використовується для факультету інженерії, управління та землевпорядкування')">
+        <area shape="poly" coords="357,444,386,432,422,521,393,532" href="#" alt="Корпус 12" onclick="showInfo(event, 'Корпус 12: Використовується для факультету архітектури, будівництва та дизайну')">
+    </map>
+
+    <script>
+        function showInfo(event, info) {
+            event.preventDefault();
+            const infoBox = document.getElementById('info-box');
+            infoBox.textContent = info;
+            infoBox.classList.add('active');
+            setTimeout(() => {
+                infoBox.classList.remove('active');
+            }, 3000); // Зникнення через 3 секунди
+        }
+
+        document.getElementById('info-box').addEventListener('click', function() {
+            this.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
