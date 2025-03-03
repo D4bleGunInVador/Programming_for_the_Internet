@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<h:html xmlns:h="http://www.w3.org/1999/xhtml"
+       xmlns:xf="http://www.w3.org/2002/xforms">
+    <h:head>
+        <h:title>Форма для вводу паспортних даних</h:title>
+        <h:style type="text/css">
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                background-color: #f4f4f4;
+            }
+            div {
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                max-width: 400px;
+                margin: auto;
+            }
+            label {
+                display: block;
+                margin-top: 10px;
+                font-weight: bold;
+            }
+            input, textarea {
+                width: 100%;
+                padding: 8px;
+                margin-top: 5px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+            button {
+                margin-top: 15px;
+                background: #28a745;
+                color: white;
+                border: none;
+                padding: 10px;
+                width: 100%;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            button:hover {
+                background: #218838;
+            }
+        </h:style>
+        <xf:model>
+            <xf:instance>
+                <data>
+                    <lastname/>
+                    <firstname/>
+                    <middlename/>
+                    <address/>
+                    <idnumber/>
+                    <photo/>
+                </data>
+            </xf:instance>
+            <xf:bind nodeset="lastname" required="true()"/>
+            <xf:bind nodeset="firstname" required="true()"/>
+            <xf:bind nodeset="address" required="true()"/>
+            <xf:bind nodeset="idnumber" required="true()" constraint="string-length(.) = 10"/>
+            <xf:bind nodeset="photo" required="true()"/>
+        </xf:model>
+    </h:head>
+    <h:body>
+        <div>
+            <h:header>
+                <h2>Форма паспортних даних</h2>
+            </h:header>
+            <xf:input ref="lastname">
+                <xf:label>Прізвище:</xf:label>
+            </xf:input>
+            <xf:input ref="firstname">
+                <xf:label>Ім'я:</xf:label>
+            </xf:input>
+            <xf:input ref="middlename">
+                <xf:label>По батькові:</xf:label>
+            </xf:input>
+            <xf:textarea ref="address">
+                <xf:label>Адреса:</xf:label>
+            </xf:textarea>
+            <xf:input ref="idnumber">
+                <xf:label>Ідентифікаційний номер:</xf:label>
+                <xf:hint>Введіть 10 цифр</xf:hint>
+            </xf:input>
+            <xf:upload ref="photo" mediatypes="image/*">
+                <xf:label>Фото паспорта:</xf:label>
+            </xf:upload>
+            <xf:submit submission="send">
+                <xf:label>Надіслати</xf:label>
+            </xf:submit>
+        </div>
+        <xf:submission id="send" action="process.php" method="post" replace="instance"/>
+    </h:body>
+</h:html>

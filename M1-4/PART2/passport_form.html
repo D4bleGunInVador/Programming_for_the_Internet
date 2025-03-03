@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма паспорта</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        form, .data-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); max-width: 400px; margin: auto; }
+        label, input, textarea { display: block; width: 100%; margin-bottom: 10px; }
+        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; cursor: pointer; }
+        button:hover { background: #218838; }
+        .delete-btn { background: red; }
+    </style>
+</head>
+<body>
+
+    <form id="passportForm" enctype="multipart/form-data">
+        <h2>Форма паспорта</h2>
+        <label>Прізвище: <input type="text" id="lastname" required></label>
+        <label>Ім'я: <input type="text" id="firstname" required></label>
+        <label>По батькові: <input type="text" id="middlename"></label>
+        <label>Адреса: <textarea id="address" required></textarea></label>
+        <label>ІПН: <input type="text" id="idnumber" required pattern="[0-9]{10}"></label>
+        <label>Фото паспорта: <input type="file" id="photo" accept="image/*"></label>
+        <button type="submit">Зберегти</button>
+    </form>
+
+    <div class="data-container">
+        <h2>Збережені паспорти</h2>
+        <ul id="passportList"></ul>
+    </div>
+
+    <script>
+        let editingIndex = null;
+
+        document.getElementById("passportForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            let formData = new FormData();
+            if (document.getElementById("photo").files.length > 0) {
+                formData.append("photo", document.getElementById("photo").files[0]);
+
+                let uploadResponse = await fetch("upload.php", {
+                    method: "POST",
+                    body: formData
+                });
+
+                let uploadResult = await uploadResponse.json();
+                if (!uploadResult.success) {
+                    alert("Помилка при завантаженні фото: " + uploadResult.error);
+                    return;
+                }
+                var photoPath = uploadResult.filePath;
+            } else {
+                var photoPath = document.getElementById("photo").dataset.existingPhoto || "";
+            }
+
+            let passportData = {
+                lastname: document.getElementById("lastname").value,
+                firstname: document.getElementById("firstname").value,
+                middlename: document.getElementById("middlename").value,
+                address: document.getElementById("address").value,
+                idnumber: document.getElementById("idnumber").value,
+                photo: photoPath,
+                index: editingIndex
+            };
+
+            let saveResponse = await fetch(editingIndex !== null ? "update_data.php" : "save_data.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(passportData)
+            });
+
+            let saveResult = await saveResponse.text();
+            alert(saveResult);
+            editingIndex = null;
+            document.getElementById("passportForm").reset();
+            loadPassports();
+        });
+
+        async function loadPassports() {
+            let response = await fetch("get_data.php");
+            let passports = await response.json();
+            let list = document.getElementById("passportList");
+            list.innerHTML = "";
+
+            passports.forEach((passport, index) => {
+                let li = document.createElement("li");
+                li.innerHTML = `
+                    <img src="${passport.photo}" alt="Фото" width="50"> 
+                    <strong>${passport.lastname} ${passport.firstname}</strong> - ${passport.address} (ІПН: ${passport.idnumber}) 
+                    <button onclick="editPassport(${index})">Редагувати</button>
+                    <button class="delete-btn" onclick="deletePassport(${index}, '${passport.photo}')">Видалити</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        function editPassport(index) {
+            fetch("get_data.php")
+                .then(response => response.json())
+                .then(passports => {
+                    let passport = passports[index];
+                    document.getElementById("lastname").value = passport.lastname;
+                    document.getElementById("firstname").value = passport.firstname;
+                    document.getElementById("middlename").value = passport.middlename;
+                    document.getElementById("address").value = passport.address;
+                    document.getElementById("idnumber").value = passport.idnumber;
+                    document.getElementById("photo").dataset.existingPhoto = passport.photo;
+                    editingIndex = index;
+                });
+        }
+
+        async function deletePassport(index, photoPath) {
+            let response = await fetch("delete_data.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ index, photo: photoPath })
+            });
+
+            let result = await response.text();
+            alert(result);
+            loadPassports();
+        }
+
+        loadPassports();
+    </script>
+
+</body>
+</html>
